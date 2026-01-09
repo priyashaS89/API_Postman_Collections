@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "949f9c46-78e4-46d5-97da-8984d786b6f3",
+		"name": "DataDriven Contacts API HW",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50005397",
+		"_collection_link": "https://priyashasubudhi2012-5200272.postman.co/workspace/APITraining~a5fcb08f-cb98-4c05-93e8-d8794f4c5833/collection/50005397-949f9c46-78e4-46d5-97da-8984d786b6f3?action=share&source=collection_link&creator=50005397"
+	},
+	"item": [
+		{
+			"name": "1. Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const a=pm.response.json();\r",
+							"const tokenId=a.token;\r",
+							"console.log(\"token id is : \"+ tokenId);\r",
+							"new_tokenId= \"Bearer \"+tokenId\r",
+							"pm.collectionVariables.set(\"tokenId\",new_tokenId);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{username}}\",\r\n    \"password\": \"{{pswd}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Create multiple  new contacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Field validation check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.firstName).to.eql(pm.iterationData.get(\"firstName\"));\r",
+							"    pm.expect(jsonData.lastName).to.eql(pm.iterationData.get(\"lastName\"));\r",
+							"\r",
+							"    const a= pm.request.body.raw;\r",
+							"    const b = JSON.parse(a);\r",
+							"   // pm.expect(jsonData.email).to.eql(b.email);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({\r",
+							"    key: 'Authorization',\r",
+							"    value: \"{{tokenId}}\"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenId}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"firstName\": \"{{firstName}}\",\r\n        \"lastName\": \"{{lastName}}\",\r\n        \"birthdate\": \"1989-09-09\",\r\n        \"email\": \"{{$randomEmail}}\",\r\n        \"phone\": \"{{$randomPhoneNumber}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Get All Users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({\r",
+							"    key: 'Authorization',\r",
+							"    value: \"{{tokenId}}\"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const a=pm.response.json();\r",
+							"const ids=a.map(a=>a._id);\r",
+							"console.log(\"ids are--------------------\"+ids);\r",
+							"pm.variables.set(\"id_list\",ids);\r",
+							"//const x=pm.get.variables(\"id_list\");\r",
+							"//console.log(\"id list are------------------\",+x);\r",
+							"\r",
+							"const get_response = pm.response.json();\r",
+							"const userIDs= get_response.map(user=>user.id);\r",
+							"console.log(userIDs)\r",
+							"pm.variables.set(\"set_userIDs\",userIDs);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/contacts",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. PUT Chaining",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({key:\"Authorization\", value: \"{{tokenId}}\"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const contacts=pm.variables.get(\"id_list\");\r",
+							"one_contact=contacts.shift();\r",
+							"pm.environment.set(\"single_contact\", one_contact);\r",
+							"if(Array.isArray(id_list) && id_list.length > 0){\r",
+							"    pm.execution.setNextRequest(\"4. PUT Chaining\");\r",
+							"}else{\r",
+							"    console.log(\"All users are updated\")\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/contacts/{{single_contact}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"contacts",
+						"{{single_contact}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		},
+		{
+			"key": "tokenId",
+			"value": ""
+		}
+	]
+}

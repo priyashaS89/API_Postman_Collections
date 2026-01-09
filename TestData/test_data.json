@@ -1,0 +1,26 @@
+[
+{
+	"name": "test2",
+    "gender": "female",
+    "status": "inactive",
+	"newstatus": "inactive"
+},
+{
+	"name": "test1",
+    "gender": "male",
+    "status": "active",
+	"newstatus": "inactive"
+},
+{
+    "name": "Rene",
+    "gender": "male",
+    "status": "active",
+	"newstatus": "inactive"
+},
+{
+    "name": "preet",
+    "gender": "female",
+    "status": "inactive",
+	"newstatus": "inactive"
+}
+]

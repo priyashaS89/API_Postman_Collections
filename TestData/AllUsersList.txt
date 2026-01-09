@@ -1,0 +1,72 @@
+[
+    {
+        "id": 8302651,
+        "name": "test2",
+        "email": "apiautomation_Nelson.Gleichner80@hotmail.com",
+        "gender": "female",
+        "status": "inactive"
+    },
+    {
+        "id": 8302650,
+        "name": "test1",
+        "email": "apiautomation_Jayda.Beier@gmail.com",
+        "gender": "male",
+        "status": "active"
+    },
+    {
+        "id": 8302649,
+        "name": "preet",
+        "email": "apiautomation_Kamille.Kreiger8@yahoo.com",
+        "gender": "female",
+        "status": "inactive"
+    },
+    {
+        "id": 8302648,
+        "name": "Rene",
+        "email": "apiautomation_Heber29@hotmail.com",
+        "gender": "male",
+        "status": "active"
+    },
+    {
+        "id": 8302616,
+        "name": "test2",
+        "email": "apiautomation_Kale99@hotmail.com",
+        "gender": "female",
+        "status": "inactive"
+    },
+    {
+        "id": 8302615,
+        "name": "test1",
+        "email": "apiautomation_Arnoldo.Skiles71@gmail.com",
+        "gender": "male",
+        "status": "active"
+    },
+    {
+        "id": 8302614,
+        "name": "preet",
+        "email": "apiautomation_Yasmin.Keebler13@hotmail.com",
+        "gender": "female",
+        "status": "inactive"
+    },
+    {
+        "id": 8302613,
+        "name": "Rene",
+        "email": "apiautomation_Max92@hotmail.com",
+        "gender": "male",
+        "status": "active"
+    },
+    {
+        "id": 8301722,
+        "name": "test2",
+        "email": "apiautomation_Gia97@hotmail.com",
+        "gender": "female",
+        "status": "inactive"
+    },
+    {
+        "id": 8301721,
+        "name": "test1",
+        "email": "apiautomation_Brendon.Erdman@hotmail.com",
+        "gender": "male",
+        "status": "active"
+    }
+]
