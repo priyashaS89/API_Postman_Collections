@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  gorest:
+    image: priyasha89/gorestddtest:1.0
+    volumes:
+      - ./results:/app/results
+
+  booking:
+    image: priyasha89/mybookingapi:1.0
+    volumes:
+      - ./results:/app/results
