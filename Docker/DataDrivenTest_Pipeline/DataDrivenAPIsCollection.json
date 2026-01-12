@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "196c5cd4-2e4f-4a61-8eb5-b952204bfeb4",
+		"name": "EP08 Data Driven API's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50005397",
+		"_collection_link": "https://priyashasubudhi2012-5200272.postman.co/workspace/APITraining~a5fcb08f-cb98-4c05-93e8-d8794f4c5833/collection/50005397-196c5cd4-2e4f-4a61-8eb5-b952204bfeb4?action=share&source=collection_link&creator=50005397"
+	},
+	"item": [
+		{
+			"name": "1. Create user with test data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(\"Check user response data\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(pm.iterationData.get(\"name\"));\r",
+							"    pm.expect(jsonData.gender).to.eql(pm.iterationData.get(\"gender\"));\r",
+							"    pm.expect(jsonData.status).to.eql(pm.iterationData.get(\"status\"));\r",
+							"\r",
+							"    //fetch the email\r",
+							"    const raw_body = pm.request.body.raw;\r",
+							"    //json to JS object\r",
+							"    const req_body = JSON.parse(raw_body);\r",
+							"    //extract the email id\r",
+							"    const expected_email = req_body.email;\r",
+							"    console.log(expected_email);\r",
+							"    pm.expect(jsonData.email).to.eql(expected_email);\r",
+							"\r",
+							"});\r",
+							"\r",
+							"const res = pm.response.json();\r",
+							"const userID= res.id;\r",
+							"pm.variables.set(\"new_userId\",userID)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "//name , gender, status is coming from data driven csv file\r\n{\r\n    \"name\": \"{{name}}\",\r\n    \"email\": \"apiautomation_{{$randomEmail}}\",\r\n    \"gender\": \"{{gender}}\",\r\n    \"status\": \"{{status}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update status by userId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// pm.test(\"Is user status updated\", function () {\r",
+							"//     var jsonData = pm.response.json();\r",
+							"//     new_status_res = jsonData.status;\r",
+							"//     console.log(\"status from response\",new_status_res);\r",
+							"//     const new_status_from_datafile=pm.iterationData.get(\"new_status\");\r",
+							"//     console.log(\"new_status_from_datafile\",new_status_from_datafile);\r",
+							"//     pm.expect(new_status_res).to.eql(new_status_from_datafile);\r",
+							"// });"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"{{new_status}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/{{new_userId}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{new_userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
