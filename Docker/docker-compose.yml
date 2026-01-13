@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   gorest:
-    image: priyasha89/gorestddtest:1.0
+    image: priyasha89/goddt:1.0
     volumes:
       - ./results:/app/results
 
